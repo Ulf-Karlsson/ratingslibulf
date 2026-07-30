@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ratingslib"
+version = "1.0.0"
+description = "Project for rating methods with applications"
+readme = "README.md"
+authors = [
+    { name = "Kyriacos Talattinis", email = "ktalattinis@gmail.com" }
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3.8"
+]
+keywords = ["ratings", "ranking", "machine learning", "classification", "predictions", "domain names", "finance"]
+requires-python = ">=3.8"
+dependencies = [
+    "joblib>=1.1.0",
+    "scipy>=1.8.1",
+    "numpy>=1.23.0",
+    "pandas>=1.4.3",
+    "scikit-learn>=1.1.1"
+]
+
+[project.urls]
+Source = "https://github.com/ktalattinis/ratingslib"
+
+[tool.setuptools.packages.find]
+include = ["ratingslib*"]
+
+[tool.setuptools.package-data]
+ratingslib = ["py.typed"]
