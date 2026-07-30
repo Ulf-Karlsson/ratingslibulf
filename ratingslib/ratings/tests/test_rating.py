@@ -32,7 +32,7 @@ from ratingslib.tests.test_all import printdetails
 from ratingslib.utils.enums import ratings
 from numpy.ma.testutils import assert_array_almost_equal
 from pandas.testing import assert_frame_equal
-from scipy.stats import stats as statsscipy
+import scipy.stats as statsscipy
 
 # get the full absolute path
 FP_FILENAME_NCAA_2005_ATLANTIC, FP_FILENAME_EPL_2018_2019_20_GAMES, FP_FILENAME_GOVAN_THESIS,\

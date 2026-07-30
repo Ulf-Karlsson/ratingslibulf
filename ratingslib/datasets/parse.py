@@ -147,9 +147,15 @@ def parse_pairs_data(filename_or_data: Union[str, pd.DataFrame],
     col_names = parse_columns(columns_dict)
     pairs_data_df = filename_or_data
     if isinstance(filename_or_data, str):
-        pairs_data_df = pd.read_csv(filename_or_data, parse_dates=parse_dates,
-                                    date_parser=date_parser, dayfirst=dayfirst,
-                                    index_col=False)
+        kwargs = {'parse_dates': parse_dates, 'dayfirst': dayfirst, 'index_col': False}
+        if int(pd.__version__.split('.')[0]) < 2:
+            kwargs['date_parser'] = date_parser
+        pairs_data_df = pd.read_csv(filename_or_data, **kwargs)
+        if int(pd.__version__.split('.')[0]) >= 2 and date_parser is not None and parse_dates is not None:
+            if isinstance(parse_dates, list):
+                for col in parse_dates:
+                    if col in pairs_data_df.columns:
+                        pairs_data_df[col] = pairs_data_df[col].apply(date_parser)
         pairs_data_df.dropna(axis=0, how='all', inplace=True)
     if outcome is not None or (frequency is not None and
                                parse_dates is not None):
@@ -277,8 +283,8 @@ def create_pairs_data(data_df: pd.DataFrame,
     item_item_df = pd.DataFrame(
         data=data, columns=list(col_names.__dict__.values()))
     item_item_df.dropna(inplace=True)
-    item_item_df[col_names.item_i].replace(columns, inplace=True)
-    item_item_df[col_names.item_j].replace(columns, inplace=True)
+    item_item_df[col_names.item_i] = item_item_df[col_names.item_i].replace(columns)
+    item_item_df[col_names.item_j] = item_item_df[col_names.item_j].replace(columns)
 
     # pandas dataframes solution is slow
     # for pair in pairs:
