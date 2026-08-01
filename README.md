@@ -5,18 +5,11 @@
 RatingsLib is a Python library dedicated to rating/ranking systems implementation 
 with applications in sports and other fields. 
 This is a fork of ktalattinis excelent project.
+The repository's dependency management has been modernized to use a pyproject.toml following PEP 621.
 ## Installation
 
 RatingsLib requires Python 3.8 or newer. More details about requirements can be found in ``requirements.txt``.
-You can install ``ratingslib`` directly ::
-```
- pip install git+https://github.com/ktalattinis/ratingslib
-```
-or by cloning the repository ::
-```
- git clone https://github.com/ktalattinis/ratingslib
- cd ratingslib
- pip install .
+git clone https://github.com/Ulf-Karlsson/ratingslibulf.git
 ```
 ## Implementation
 Rating/Ranking systems:
