@@ -8,8 +8,29 @@ This is a fork of ktalattinis excelent project.
 The repository's dependency management has been modernized to use a pyproject.toml following PEP 621.
 ## Installation
 
-RatingsLib requires Python 3.8 or newer. More details about requirements can be found in ``requirements.txt``.
+RatingsLib requires Python 3.8 or newer. 
+Option 1: Install Directly from GitHub (Quickest)
+If you just want to install the library to use it in your Python scripts on another PC, you don't even need to download the files manually. Just run this command:
+
+powershell
+
+
+pip install git+https://github.com/Ulf-Karlsson/ratingslibulf.git
+This will automatically download the package, read the pyproject.toml, and install ratingslib and all its dependencies (Pandas, SciPy, etc.) into your environment.
+
+Option 2: Clone and Install (For Development)
+If you plan to modify the code on the other PC, you should clone the repository first and then install it:
+
+powershell
+
+
+# 1. Clone the repository
 git clone https://github.com/Ulf-Karlsson/ratingslibulf.git
+# 2. Enter the directory
+cd ratingslibulf
+# 3. Install the package
+pip install .
+
 ```
 ## Implementation
 Rating/Ranking systems:
