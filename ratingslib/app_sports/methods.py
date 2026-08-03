@@ -996,15 +996,15 @@ def enter_values(data: pd.DataFrame,
     data_truncate_df = data.copy(deep=True)
     for k in rating_systems:
         # k=k#.value
-        data_truncate_df['H' + k] = data[['H' + k]].applymap(trunc)
-        data_truncate_df['A' + k] = data[['A' + k]].applymap(trunc)
+        data_truncate_df['H' + k] = data['H' + k].map(trunc)
+        data_truncate_df['A' + k] = data['A' + k].map(trunc)
         data_truncate_df['Hratingnorm' + k] = \
-            data[['Hratingnorm' + k]].applymap(trunc)
+            data['Hratingnorm' + k].map(trunc)
         data_truncate_df['Aratingnorm' + k] = \
-            data[['Aratingnorm' + k]].applymap(trunc)
+            data['Aratingnorm' + k].map(trunc)
     for k in stats_attributes:
-        data_truncate_df['H' + k] = data[['H' + k]].applymap(trunc)
-        data_truncate_df['A' + k] = data[['A' + k]].applymap(trunc)
+        data_truncate_df['H' + k] = data['H' + k].map(trunc)
+        data_truncate_df['A' + k] = data['A' + k].map(trunc)
     return data_truncate_df
 
 
@@ -1106,6 +1106,19 @@ def prepare_sport_dataset(data_season: pd.DataFrame,
         ratings_dict = {}
     else:
         ratings_dict = rating_systems_to_dict(rating_systems)
+
+    # Auto-discover all teams from the full dataset to handle incomplete
+    # match days. If the forecast week has fewer matches than a full round,
+    # teams_df (derived from parse_pairs_data) may be missing teams that
+    # appear in the training data, causing KeyError during rating computation.
+    all_home = data_season[[col_names.item_i]].rename(
+        columns={col_names.item_i: 'Item'})
+    all_away = data_season[[col_names.item_j]].rename(
+        columns={col_names.item_j: 'Item'})
+    all_teams = pd.concat([all_home, all_away]).drop_duplicates(subset='Item')
+    teams_df = pd.concat([teams_df, all_teams]).drop_duplicates(
+        subset='Item').sort_values(by='Item').reset_index(drop=True)
+
     teams_dict = create_items_dict(teams_df)
 
     data_season[[side+norm+rs_name for rs_name in ratings_dict
