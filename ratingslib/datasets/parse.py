@@ -157,6 +157,15 @@ def parse_pairs_data(filename_or_data: Union[str, pd.DataFrame],
                     if col in pairs_data_df.columns:
                         pairs_data_df[col] = pairs_data_df[col].apply(date_parser)
         pairs_data_df.dropna(axis=0, how='all', inplace=True)
+    # Ensure date columns are datetime. pd.read_csv may fail to auto-detect
+    # non-standard date formats (e.g. DD/MM/YYYY) on some Pandas versions,
+    # leaving them as strings which causes .dt.to_period() to fail later.
+    if parse_dates is not None and isinstance(parse_dates, list):
+        for col in parse_dates:
+            col_name = str(col)
+            if col_name in pairs_data_df.columns and not pd.api.types.is_datetime64_any_dtype(pairs_data_df[col_name]):
+                pairs_data_df[col_name] = pd.to_datetime(
+                    pairs_data_df[col_name], dayfirst=dayfirst)
     if outcome is not None or (frequency is not None and
                                parse_dates is not None):
         pairs_data_df = _parse(pairs_data_df, col_names, parse_dates,
