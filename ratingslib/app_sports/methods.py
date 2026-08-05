@@ -1133,7 +1133,8 @@ def prepare_sport_dataset(data_season: pd.DataFrame,
     for week in range(start_week, max_week+1):
         data_train = data_season.loc[
             data_season[col_names.period_number] < week]
-        for score_col in [col_names.points_i, col_names.points_j, col_names.score_i, col_names.score_j]:
+        for attr in ['points_i', 'points_j', 'score_i', 'score_j']:
+            score_col = getattr(col_names, attr, None)
             if score_col is not None and score_col in data_train.columns:
                 data_train = data_train.dropna(subset=[score_col])
         data_current_week = data_season.loc[
