@@ -164,8 +164,13 @@ def parse_pairs_data(filename_or_data: Union[str, pd.DataFrame],
         for col in parse_dates:
             col_name = str(col)
             if col_name in pairs_data_df.columns and not pd.api.types.is_datetime64_any_dtype(pairs_data_df[col_name]):
-                pairs_data_df[col_name] = pd.to_datetime(
-                    pairs_data_df[col_name], dayfirst=dayfirst)
+                try:
+                    pairs_data_df[col_name] = pd.to_datetime(
+                        pairs_data_df[col_name], dayfirst=dayfirst,
+                        format='mixed')
+                except (TypeError, ValueError):
+                    pairs_data_df[col_name] = pd.to_datetime(
+                        pairs_data_df[col_name], dayfirst=dayfirst)
     if outcome is not None or (frequency is not None and
                                parse_dates is not None):
         pairs_data_df = _parse(pairs_data_df, col_names, parse_dates,
