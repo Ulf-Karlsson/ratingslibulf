@@ -181,7 +181,7 @@ class RatingSystem(object):
             The set of items with their rating and ranking.
         """
         items_df['rating'] = self.rating
-        items_df['rating'] = items_df['rating'].astype(float).fillna(0.0)
+        items_df['rating'] = items_df['rating'].replace([np.inf, -np.inf], np.nan).astype(float).fillna(0.0)
         items_df['ranking'] = items_df.rating.rank(method='dense',
                                                    ascending=rating_lower_best).fillna(0).astype(int)
         if sort:

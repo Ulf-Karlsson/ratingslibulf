@@ -258,8 +258,8 @@ class RankingAggregation(RatingSystem):
             len_items = len(data_df.index)
         for rc in rating_columns:
             rank_column = rc+"_rank"
-            data_df[rank_column] = -data_df[rc].rank(
-                method='dense', ascending=rating_lower_best).astype(int) + len_items
+            data_df[rank_column] = -data_df[rc].replace([np.inf, -np.inf], np.nan).rank(
+                method='dense', ascending=rating_lower_best).fillna(0).astype(int) + len_items
             ranking_columns.append(rc+"_rank")
         data = data_df[ranking_columns].values
         if aggregation_method == ratings.RANKINGBORDA:
