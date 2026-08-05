@@ -85,7 +85,11 @@ class Colley(RatingSystem):
 
     def computation_phase(self):
         """Solve the system Cr=b to obtain the Colley rating vector r."""
-        self.rating = np.linalg.solve(self.C, self.b)
+        try:
+            self.rating = np.linalg.solve(np.nan_to_num(self.C, nan=0.0, posinf=0.0, neginf=0.0),
+                                          np.nan_to_num(self.b, nan=0.0, posinf=0.0, neginf=0.0))
+        except (np.linalg.LinAlgError, ValueError):
+            self.rating = np.zeros(len(self.b))
 
     def create_colley_matrix(self, data_df: pd.DataFrame,
                              items_df: pd.DataFrame,

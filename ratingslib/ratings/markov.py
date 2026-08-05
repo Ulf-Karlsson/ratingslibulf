@@ -252,17 +252,23 @@ class Markov(RatingSystem):
 
     @staticmethod
     def compute(stochastic_matrix, b):
+        stochastic_matrix = np.nan_to_num(stochastic_matrix, nan=0.0, posinf=0.0, neginf=0.0)
         n = len(stochastic_matrix)
         stochastic_matrix_asch = (b * stochastic_matrix
                                   + ((1 - b) / n) * np.ones((n, n)))
-        eigenvalues, eigenvectors = np.linalg.eig(
-            stochastic_matrix_asch.T)
-        # Find index of eigenvalue = 1
-        idx = np.argmin(np.abs(eigenvalues - 1))
-        w = np.real(eigenvectors[:, idx]).T
-        # Normalize eigenvector to get a probability distribution
-        pi_steady = w / np.sum(w)
-        rating = pi_steady
+        try:
+            eigenvalues, eigenvectors = np.linalg.eig(
+                stochastic_matrix_asch.T)
+            # Find index of eigenvalue = 1
+            idx = np.argmin(np.abs(eigenvalues - 1))
+            w = np.real(eigenvectors[:, idx]).T
+            # Normalize eigenvector to get a probability distribution
+            pi_steady = w / np.sum(w)
+            pi_steady = np.nan_to_num(pi_steady, nan=0.0, posinf=0.0, neginf=0.0)
+            rating = pi_steady
+        except (np.linalg.LinAlgError, ValueError, IndexError, ZeroDivisionError):
+            pi_steady = np.zeros(n)
+            rating = pi_steady
         return stochastic_matrix_asch, pi_steady, rating
 
     def computation_phase(self):

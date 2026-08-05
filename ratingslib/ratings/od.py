@@ -118,14 +118,19 @@ class OffenseDefense(RatingSystem):
         self.defense = e
         self.error = 1
         self.iter = 0
-        while self.error > self.tol:
+        while self.error > self.tol and self.iter < 10000 and not np.isnan(self.error) and not np.isinf(self.error):
             oldobar = self.defense
-            self.offense = (self.P.conj().transpose()) @ (1 / self.defense)
-            self.defense = (self.P) @ (1 / self.offense)
-            self.error = float(
-                np.linalg.norm(oldobar * (1 / self.defense) - e, 1))
+            with np.errstate(divide='ignore', invalid='ignore'):
+                self.offense = np.nan_to_num((self.P.conj().transpose()) @ (1 / self.defense), nan=1.0, posinf=1.0, neginf=1.0)
+                self.defense = np.nan_to_num((self.P) @ (1 / self.offense), nan=1.0, posinf=1.0, neginf=1.0)
+                try:
+                    self.error = float(
+                        np.linalg.norm(oldobar * (1 / self.defense) - e, 1))
+                except (ValueError, np.linalg.LinAlgError):
+                    break
             self.iter += 1
-        self.rating = self.offense / self.defense
+        with np.errstate(divide='ignore', invalid='ignore'):
+            self.rating = np.nan_to_num(self.offense / self.defense, nan=0.0, posinf=0.0, neginf=0.0)
         logging.info("iterations: %d error: %s tol: %.7f ", self.iter,
                      str(self.error), self.tol)
         log_numpy_matrix(self.offense, 'Offensive vector')

@@ -94,11 +94,16 @@ class Keener(RatingSystem):
 
     @staticmethod
     def compute(A: np.ndarray):
-        eigvals, eigvecs = LA.eig(A)
-        lamvda = max(eigvals.real)
-        index = [i for i, j in enumerate(eigvals.real) if j == lamvda]
-        rating = abs(eigvecs[:, index[0]].real) / sum(
-            abs(eigvecs[:, index[0]].real))
+        A = np.nan_to_num(A, nan=0.0, posinf=0.0, neginf=0.0)
+        try:
+            eigvals, eigvecs = LA.eig(A)
+            lamvda = max(eigvals.real)
+            index = [i for i, j in enumerate(eigvals.real) if j == lamvda]
+            rating = abs(eigvecs[:, index[0]].real) / sum(
+                abs(eigvecs[:, index[0]].real))
+            rating = np.nan_to_num(rating, nan=0.0, posinf=0.0, neginf=0.0)
+        except (LA.LinAlgError, ValueError, IndexError, ZeroDivisionError):
+            rating = np.zeros(len(A))
         return rating
 
     def computation_phase(self):

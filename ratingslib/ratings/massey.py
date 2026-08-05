@@ -101,8 +101,9 @@ class Massey(RatingSystem):
 
     def computation_phase(self):
         try:
-            self.rating = linalg.solve(self.Madj, self.d_adj)
-        except linalg.LinAlgError:
+            self.rating = linalg.solve(np.nan_to_num(self.Madj, nan=0.0, posinf=0.0, neginf=0.0),
+                                       np.nan_to_num(self.d_adj, nan=0.0, posinf=0.0, neginf=0.0))
+        except (linalg.LinAlgError, ValueError):
             warnings.warn(
                 "Singular matrix in Massey, all ratings will be set to 0")
             self.rating = np.zeros(len(self.d_adj))
