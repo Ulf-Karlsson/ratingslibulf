@@ -91,6 +91,46 @@ class TestMethods(unittest.TestCase):
         self.assertIn('MLE', results_par)
         self.assertEqual(len(results_par['MLE']['AccuRATE'][1]), 5)
 
+    @printdetails
+    def test_prepare_forecast_dataset(self):
+        import numpy as np
+        import pandas as pd
+        from ratingslib.app_sports.methods import prepare_forecast_dataset, prepare_sport_dataset, Predictions
+        from ratingslib.ratings.elo import Elo
+        columns_dict = COLUMNS_DICT.copy()
+        outcome = SoccerOutcome()
+        data_train, teams_df = parse_pairs_data(FP_FILENAME_EPL_2018_2019_20_GAMES,
+                                                outcome=outcome,
+                                                columns_dict=columns_dict)
+        data_train['Week_Number'] = np.arange(1, len(data_train) + 1)
+
+        # Create separate upcoming matchday dataset (no concatenation required)
+        data_test = data_train.iloc[:3].copy()
+        data_test['FTHG'] = np.nan
+        data_test['FTAG'] = np.nan
+        data_test[outcome.name] = np.nan
+        data_test['Week_Number'] = 100
+
+        ac = AccuRate()
+        train_prep, test_prep = prepare_forecast_dataset(data_train, data_test, teams_df, {'AccuRATE': ac}, start_week=2, columns_dict=columns_dict)
+        self.assertIn('HratingnormAccuRATE', test_prep.columns)
+        self.assertIn('AratingnormAccuRATE', test_prep.columns)
+
+        # Also test via prepare_sport_dataset forwarding
+        train_prep2, test_prep2 = prepare_sport_dataset(data_train, teams_df, {'AccuRATE': ac}, start_week=2, columns_dict=columns_dict, data_test=data_test)
+        self.assertEqual(len(test_prep2), 3)
+
+        preds = Predictions(train_prep, outcome, data_test=test_prep,
+                            print_accuracy_report=True,
+                            print_predictions=True,
+                            print_classification_report=True,
+                            columns_dict=columns_dict)
+        results = preds.rs_pred_parallel(rating_systems={'AccuRATE': ac}, pred_methods_list=['MLE', 'RANK'])
+        self.assertIn('MLE', results)
+        self.assertIn('RANK', results)
+        self.assertEqual(len(results['MLE']['AccuRATE'][1]), 3)
+        self.assertEqual(len(results['RANK']['AccuRATE'][1]), 3)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1084,7 +1084,8 @@ def prepare_sport_dataset(data_season: pd.DataFrame,
                           stats_attributes=None,
                           start_week: int = 4,
                           preprocess: Optional[Preprocess] = BasicPreprocess(),
-                          columns_dict: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
+                          columns_dict: Optional[Dict[str, Any]] = None,
+                          data_test: Optional[pd.DataFrame] = None) -> Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame]]:
     """Prepares the sport dataset in order to enter values of ratings and
     calculated games statistics to the teams every match-week.
 
@@ -1124,11 +1125,25 @@ def prepare_sport_dataset(data_season: pd.DataFrame,
         A dictionary mapping the column names of the dataset.
         See the module :mod:`ratingslib.datasets.parameters` for more details
 
+    data_test : Optional[pd.DataFrame], default=None
+        Upcoming matches or future fixtures dataset. If provided, prepares features
+        for both train and test sets cleanly without concatenation or week shifting.
+
     Returns
     -------
-    pd.DataFrame
-        DataFrame of prepared data
+    Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame]]
+        DataFrame of prepared data, or tuple of (prepared_train, prepared_test) if data_test is provided.
     """
+    if data_test is not None:
+        return prepare_forecast_dataset(
+            data_train=data_season,
+            data_test=data_test,
+            teams_df=teams_df,
+            rating_systems=rating_systems,
+            stats_attributes=stats_attributes,
+            start_week=start_week,
+            preprocess=preprocess,
+            columns_dict=columns_dict)
 
     col_names = parse_columns(columns_dict)
     sides = ['H', 'A']
@@ -1199,6 +1214,127 @@ def prepare_sport_dataset(data_season: pd.DataFrame,
     if preprocess is not None:
         data_season = preprocess.preprocessing(data_season, columns_dict)
     return data_season
+
+
+def prepare_forecast_dataset(data_train: pd.DataFrame,
+                             data_test: pd.DataFrame,
+                             teams_df: pd.DataFrame,
+                             rating_systems: Optional[
+                                 Union[Dict[str, RatingSystem],
+                                       List[RatingSystem],
+                                       RatingSystem]] = None,
+                             stats_attributes=None,
+                             start_week: int = 4,
+                             preprocess: Optional[Preprocess] = BasicPreprocess(),
+                             columns_dict: Optional[Dict[str, Any]] = None) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Prepares feature columns (ratings and statistics) cleanly for both
+    historical training matches and future test forecasts without concatenating
+    the datasets or adjusting match-week numbering.
+
+    Parameters
+    ----------
+    data_train : pd.DataFrame
+        Historical games data for training models.
+
+    data_test : pd.DataFrame
+        Upcoming fixtures or games to be predicted.
+
+    teams_df : pd.DataFrame
+        Set of teams.
+
+    rating_systems : Dict[str, RatingSystem] or List[RatingSystem] or RatingSystem or None, default=None
+        Rating systems to evaluate.
+
+    stats_attributes : Optional[Dict[str, Dict[Any, Any]]], default=None
+        Statistic attributes to compute.
+
+    start_week : int, optional
+        The match-week that rating procedure starts for training data.
+
+    preprocess : Preprocess
+        Preprocess procedure for the training dataset.
+
+    columns_dict : Optional[Dict[str, Any]], default=None
+        Column names mapping.
+
+    Returns
+    -------
+    Tuple[pd.DataFrame, pd.DataFrame]
+        Tuple containing (prepared_data_train, prepared_data_test).
+    """
+    col_names = parse_columns(columns_dict)
+    sides = ['H', 'A']
+    if rating_systems is None:
+        ratings_dict = {}
+    else:
+        ratings_dict = rating_systems_to_dict(rating_systems)
+
+    # Auto-discover all teams across train and test sets
+    all_home = pd.concat([data_train[[col_names.item_i]], data_test[[col_names.item_i]]]).rename(
+        columns={col_names.item_i: 'Item'})
+    all_away = pd.concat([data_train[[col_names.item_j]], data_test[[col_names.item_j]]]).rename(
+        columns={col_names.item_j: 'Item'})
+    all_teams = pd.concat([all_home, all_away]).drop_duplicates(subset='Item')
+    teams_df_full = pd.concat([teams_df, all_teams]).drop_duplicates(
+        subset='Item').sort_values(by='Item').reset_index(drop=True)
+    teams_dict = create_items_dict(teams_df_full)
+
+    # Prepare historical training set
+    data_train_prep = prepare_sport_dataset(
+        data_season=data_train.copy(deep=True),
+        teams_df=teams_df_full,
+        rating_systems=rating_systems,
+        stats_attributes=stats_attributes,
+        start_week=start_week,
+        preprocess=preprocess,
+        columns_dict=columns_dict,
+        data_test=None
+    )
+
+    # Calculate final rating values and stats across ALL training matches for data_test
+    data_train_valid = data_train.copy(deep=True)
+    for attr in ['points_i', 'points_j', 'score_i', 'score_j']:
+        score_col = getattr(col_names, attr, None)
+        if score_col is not None and score_col in data_train_valid.columns:
+            data_train_valid = data_train_valid.dropna(subset=[score_col])
+
+    teams_df_final = teams_df_full.copy(deep=True)
+    for rs_name in ratings_dict:
+        for norm in ['', 'ratingnorm']:
+            teams_df_final[norm+rs_name] = 0.0
+    for rs_name, rs in ratings_dict.items():
+        teams_df_final = _create_rating_data(rs_name, rs, data_train_valid, teams_df_final)
+
+    teams_df_final = calc_items_stats(
+        data_train_valid, teams_df_final, teams_dict,
+        normalization=True,
+        stats_columns_dict=stats_attributes
+    )
+
+    # Initialize feature columns on data_test and apply up-to-date ratings/stats
+    data_test_prep = data_test.copy(deep=True)
+    for rs_name in ratings_dict:
+        for norm in ['', 'ratingnorm']:
+            for side in sides:
+                data_test_prep[side+norm+rs_name] = 0.0
+    if stats_attributes is not None:
+        for s in stats_attributes:
+            for side in sides:
+                data_test_prep[side+s] = 0.0
+    data_test_prep['HNG'] = 0.0
+    data_test_prep['ANG'] = 0.0
+
+    data_test_prep = enter_values(
+        data=data_test_prep,
+        teams_df=teams_df_final,
+        teams_dict=teams_dict,
+        rating_systems=ratings_dict,
+        stats_attributes=stats_attributes,
+        columns_dict=columns_dict
+    )
+
+    return data_train_prep, data_test_prep
+
 
 
 def prepare_sports_seasons(filenames: Union[str, Dict[int, str]],
