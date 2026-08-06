@@ -454,7 +454,23 @@ class Predictions():
             data_X, data_Y, data_season = self._select_X_Y(
                 data_season.copy(deep=True), features_names, col_names)
             if not data_season.empty:
-                if self.data_test is not None:
+                score_cols = [getattr(col_names, attr, None) for attr in ['points_i', 'points_j', 'score_i', 'score_j']]
+                score_cols = [c for c in score_cols if c is not None and c in data_season.columns]
+                unplayed_mask = pd.Series(False, index=data_season.index)
+                if score_cols:
+                    unplayed_mask = data_season[score_cols].isna().any(axis=1)
+                if self.outcome.name in data_season.columns:
+                    unplayed_mask = unplayed_mask | data_season[self.outcome.name].isna()
+
+                if unplayed_mask.any() and self.data_test is None:
+                    train_mask = ~unplayed_mask
+                    train_X = data_X[train_mask]
+                    train_Y = data_Y[train_mask]
+                    test_X = data_X[unplayed_mask]
+                    test_Y = data_Y[unplayed_mask]
+                    pred, pred_prob = self._predict(
+                        pred_method, train_X,  train_Y, test_X)
+                elif self.data_test is not None:
                     train_X = data_X
                     train_Y = data_Y
                     test_X = self.data_test[features_names]
@@ -1129,6 +1145,19 @@ def prepare_sport_dataset(data_season: pd.DataFrame,
     if stats_attributes is not None:
         data_season[[side+s for s in stats_attributes
                      for side in sides]] = 0.0
+
+    score_cols = [getattr(col_names, attr, None) for attr in ['points_i', 'points_j', 'score_i', 'score_j']]
+    score_cols = [c for c in score_cols if c is not None and c in data_season.columns]
+    if col_names.period_number in data_season.columns and score_cols:
+        unplayed_mask = data_season[score_cols].isna().any(axis=1)
+        played_mask = ~unplayed_mask
+        if played_mask.any() and unplayed_mask.any():
+            max_played_week = data_season.loc[played_mask, col_names.period_number].max()
+            min_unplayed_week = data_season.loc[unplayed_mask, col_names.period_number].min()
+            if min_unplayed_week <= max_played_week:
+                offset = max_played_week - min_unplayed_week + 1
+                data_season.loc[unplayed_mask, col_names.period_number] += offset
+
     max_week = max(data_season[col_names.period_number])
     for week in range(start_week, max_week+1):
         data_train = data_season.loc[

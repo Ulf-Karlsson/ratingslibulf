@@ -55,6 +55,32 @@ class TestMethods(unittest.TestCase):
         self.assertListEqual(pred,
                              [2, 1, 2, 2, 2, 1, 2, 2, 1, 1, 2, 1, 1, 1, 1, 2, 2, 2, 1, 2])
 
+    @printdetails
+    def test_foresight_unplayed_matches_week_collision(self):
+        import numpy as np
+        import pandas as pd
+        from ratingslib.app_sports.methods import prepare_sport_dataset, Predictions
+        from ratingslib.ratings.elo import Elo
+        columns_dict = COLUMNS_DICT.copy()
+        outcome = SoccerOutcome()
+        data_train, teams_df = parse_pairs_data(FP_FILENAME_EPL_2018_2019_20_GAMES,
+                                                outcome=outcome,
+                                                columns_dict=columns_dict)
+        data_train['Week_Number'] = np.arange(1, len(data_train) + 1)
+        
+        data_test = data_train.iloc[:5].copy()
+        data_test['FTHG'] = np.nan
+        data_test['FTAG'] = np.nan
+        data_test['Week_Number'] = 18
+        
+        data_all = pd.concat([data_train, data_test]).reset_index(drop=True)
+        ac = AccuRate()
+        data_prep = prepare_sport_dataset(data_all, teams_df, ac, start_week=2, columns_dict=columns_dict)
+        
+        preds = Predictions(data_prep, outcome, start_from_week=18, columns_dict=columns_dict)
+        test_Y, pred = preds.rs_pred(pred_method='MLE', ratings=ac)
+        self.assertEqual(len(pred), 5)
+
 
 if __name__ == '__main__':
     unittest.main()

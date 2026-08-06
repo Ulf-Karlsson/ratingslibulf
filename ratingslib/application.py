@@ -174,6 +174,8 @@ class SoccerOutcome(SportOutcome):
         """
         points_ij, points_ji = points(
             row, self.home_points_col_index, self.away_points_col_index)
+        if pd.isna(points_ij) or pd.isna(points_ji):
+            return np.nan
         if points_ij > points_ji:
             return self.H
         elif points_ij < points_ji:
