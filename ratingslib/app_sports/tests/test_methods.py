@@ -71,15 +71,25 @@ class TestMethods(unittest.TestCase):
         data_test = data_train.iloc[:5].copy()
         data_test['FTHG'] = np.nan
         data_test['FTAG'] = np.nan
+        data_test[outcome.name] = np.nan
         data_test['Week_Number'] = 18
         
         data_all = pd.concat([data_train, data_test]).reset_index(drop=True)
         ac = AccuRate()
         data_prep = prepare_sport_dataset(data_all, teams_df, ac, start_week=2, columns_dict=columns_dict)
         
-        preds = Predictions(data_prep, outcome, start_from_week=18, columns_dict=columns_dict)
+        preds = Predictions(data_prep, outcome, start_from_week=18,
+                            print_accuracy_report=True,
+                            print_predictions=True,
+                            print_classification_report=True,
+                            columns_dict=columns_dict)
         test_Y, pred = preds.rs_pred(pred_method='MLE', ratings=ac)
         self.assertEqual(len(pred), 5)
+        
+        # Test parallel execution with report printing on unplayed matches (NaN actual outcomes)
+        results_par = preds.rs_pred_parallel(rating_systems={'AccuRate': ac}, pred_methods_list=['MLE'])
+        self.assertIn('MLE', results_par)
+        self.assertEqual(len(results_par['MLE']['AccuRATE'][1]), 5)
 
 
 if __name__ == '__main__':

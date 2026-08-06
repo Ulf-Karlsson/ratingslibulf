@@ -127,8 +127,13 @@ def accuracy_results(test_Y: list, predictions: list) -> Tuple[float, int]:
     correct : int
         Correctly classified samples
     """
-    accuracy = accuracy_score(test_Y, predictions)
-    correct = accuracy_score(test_Y, predictions, normalize=False)
+    valid_mask = ~pd.Series(test_Y).isna() & ~pd.Series(predictions).isna()
+    if not valid_mask.any():
+        return 'NA', 'NA'
+    test_Y_valid = pd.Series(test_Y)[valid_mask]
+    preds_valid = pd.Series(predictions)[valid_mask]
+    accuracy = accuracy_score(test_Y_valid, preds_valid)
+    correct = accuracy_score(test_Y_valid, preds_valid, normalize=False)
     return accuracy, correct
 
 
@@ -158,9 +163,16 @@ def show_list_of_accuracy_results(names_list: List[str], test_Y: list, predictio
             accuracy, correct = accuracy_results(
                 test_Y[i], predictions_list[i])
             if print_predictions:
-                pred = [str(int(item[0]))+"/"+str(int(item[1]))
-                        for item in tuple(zip(predictions_list[i], test_Y[i]))]
-            wrong_games = len(test_Y[i])-correct
+                pred = [
+                    (str(int(item[0])) if not pd.isna(item[0]) else "-") + "/" +
+                    (str(int(item[1])) if not pd.isna(item[1]) else "-")
+                    for item in tuple(zip(predictions_list[i], test_Y[i]))
+                ]
+            if correct != 'NA':
+                valid_count = sum(~pd.Series(test_Y[i]).isna() & ~pd.Series(predictions_list[i]).isna())
+                wrong_games = valid_count - correct
+            else:
+                wrong_games = 'NA'
         else:
             accuracy, correct, pred, wrong_games = 'NA', 'NA', 'NA', 'NA'
         result = [accuracy, correct, wrong_games, len(test_Y[i])]
@@ -177,7 +189,7 @@ def show_list_of_accuracy_results(names_list: List[str], test_Y: list, predictio
                               index=names_list))
     if print_predictions:
         notation = ("\n *** Predictions columns notation: (Predicted / Actual), " +
-                    "1 = Home Win, 2 = Away Win, 3 = Draw")
+                    "1 = Home Win, 2 = Away Win, 3 = Draw, - = Unplayed/Missing")
         print(notation)
 
 
@@ -203,17 +215,25 @@ def classification_details(name: str, test_Y: list, pred: list) -> str:
     """
     result = f'No predictions made from: [{name}]'
     if len(pred) != 0:
-        correct = accuracy_score(test_Y, pred, normalize=False)
-        total = len(pred)
-        wrong = total - correct
-        result = ""
-        result += str_info(name) + '\n'
-        result += classification_report(test_Y, pred, digits=4) + '\n'
-        result += 'confusion matrix:\n' + \
-            np.array2string(confusion_matrix(test_Y, pred), prefix="\n") + '\n'
-        result += 'Correct games: ' + str(correct) + '\n'
-        result += 'Wrong games: ' + str(wrong) + '\n'
-        result += 'Total predicted Games: ' + str(total) + '\n'
+        valid_mask = ~pd.Series(test_Y).isna() & ~pd.Series(pred).isna()
+        result = str_info(name) + '\n'
+        if not valid_mask.any():
+            result += 'No actual match outcomes available (unplayed foresight fixtures)\n'
+            result += 'Total forecasted Games: ' + str(len(pred)) + '\n'
+        else:
+            test_Y_val = pd.Series(test_Y)[valid_mask]
+            pred_val = pd.Series(pred)[valid_mask]
+            correct = accuracy_score(test_Y_val, pred_val, normalize=False)
+            total = len(pred_val)
+            wrong = total - correct
+            result += classification_report(test_Y_val, pred_val, digits=4) + '\n'
+            result += 'confusion matrix:\n' + \
+                np.array2string(confusion_matrix(test_Y_val, pred_val), prefix="\n") + '\n'
+            result += 'Correct games: ' + str(correct) + '\n'
+            result += 'Wrong games: ' + str(wrong) + '\n'
+            result += 'Total evaluated Games: ' + str(total) + '\n'
+            if len(pred) != total:
+                result += f'Total predictions (including {len(pred) - total} unplayed fixtures): {len(pred)}\n'
     return result
 
 
@@ -726,13 +746,7 @@ class Predictions():
         if classification_report_all:
             for k, v in results_dict.items():
                 for rkey, (test_Y, pred) in v.items():
-                    print_info(f'{k} {rkey}')
-                    if len(pred) != 0:
-                        print(classification_report(test_Y, pred, digits=4))
-                        print('confusion matrix:\n',
-                              confusion_matrix(test_Y, pred))
-                    else:
-                        print('No predictions made')
+                    print(classification_details(f'{k} {rkey}', test_Y, pred))
         if accuracy_report_all:
             for k, v in results_dict.items():
                 print_info(k)
