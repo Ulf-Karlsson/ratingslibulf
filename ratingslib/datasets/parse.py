@@ -26,30 +26,16 @@ def _parse(pairs_data_df,
     if parse_dates is not None and frequency is not None:
         pairs_data_df[col_names.period] = \
             pairs_data_df[str(parse_dates[0])].dt.to_period(frequency)
-        pairs_data_df[col_names.period_number] = \
-            pairs_data_df[col_names.period].dt.week
-        period_number_index = get_indices(col_names.period_number,
-                                          data=pairs_data_df)
-        oldrow = 0
-    data_np = pairs_data_df.to_numpy()
+        unique_periods = sorted(pairs_data_df[col_names.period].dropna().unique())
+        period_to_week = {period: start_period_from + i for i, period in enumerate(unique_periods)}
+        pairs_data_df[col_names.period_number] = (
+            pairs_data_df[col_names.period].map(period_to_week).fillna(start_period_from).astype(int)
+        )
     if outcome is not None:
         outcome.set_col_indices(pairs_data_df)
-    for index, row in enumerate(data_np):
-        # If outcome is not None then map
-        if outcome is not None:
+        data_np = pairs_data_df.to_numpy()
+        for index, row in enumerate(data_np):
             pairs_data_df.at[index, outcome.name] = outcome.outcome_value(row)
-        # Set week numbers
-        if parse_dates is not None:
-            if index == 0:
-                pairs_data_df.at[index,
-                                 col_names.period_number] = start_period_from  # 1
-                newrow = start_period_from  # 1
-            elif oldrow == row[period_number_index]:
-                pairs_data_df.at[index, col_names.period_number] = newrow
-            else:
-                newrow += 1
-                pairs_data_df.at[index, col_names.period_number] = newrow
-            oldrow = row[period_number_index]
     return pairs_data_df
 
 
