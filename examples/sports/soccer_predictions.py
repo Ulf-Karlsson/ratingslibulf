@@ -1,20 +1,20 @@
 """Soccer hindsight and foresight predictions"""
 
-import ratingslib.ratings as rl
+import ratingslibulf.ratings as rl
 import pandas as pd
-from ratingslib.app_sports.methods import (Predictions, predict_hindsight,
+from ratingslibulf.app_sports.methods import (Predictions, predict_hindsight,
                                            prepare_sport_dataset,
                                            show_list_of_accuracy_results)
-from ratingslib.application import SoccerOutcome
-from ratingslib.datasets.filenames import (FILENAME_EPL_2018_2019_3RD_WEEK,
+from ratingslibulf.application import SoccerOutcome
+from ratingslibulf.datasets.filenames import (FILENAME_EPL_2018_2019_3RD_WEEK,
                                            FILENAME_EPL_2018_2019_20_GAMES,
                                            datasets_paths)
-from ratingslib.datasets.parameters import (COLUMNS_DICT, DATE_COL, WEEK_PERIOD,
+from ratingslibulf.datasets.parameters import (COLUMNS_DICT, DATE_COL, WEEK_PERIOD,
                                             stats)
-from ratingslib.datasets.parse import parse_pairs_data
-from ratingslib.ratings.methods import rating_systems_to_dict
-from ratingslib.utils.enums import ratings
-from ratingslib.utils.methods import print_info
+from ratingslibulf.datasets.parse import parse_pairs_data
+from ratingslibulf.ratings.methods import rating_systems_to_dict
+from ratingslibulf.utils.enums import ratings
+from ratingslibulf.utils.methods import print_info
 
 # rating systems
 ratings_list = [

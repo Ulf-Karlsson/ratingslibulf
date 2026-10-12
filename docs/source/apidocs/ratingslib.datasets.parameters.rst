@@ -1,7 +1,7 @@
-ratingslib.datasets.parameters module
+ratingslibulf.datasets.parameters module
 =====================================
 
-.. automodule:: ratingslib.datasets.parameters
+.. automodule:: ratingslibulf.datasets.parameters
    :members:
    :undoc-members:
    :show-inheritance:

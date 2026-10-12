@@ -36,7 +36,7 @@ We rate the portfolios by applying rating aggregation methods.
 .. rubric:: Portfolios’ Attributes
 .. _label1:
 .. csv-table::
-   :file: ../../../../ratingslib/datasets/examples/portfoliosExample.csv
+   :file: ../../../../ratingslibulf/datasets/examples/portfoliosExample.csv
    :header-rows: 1
 
 .. rubric:: Portfolios' Growth

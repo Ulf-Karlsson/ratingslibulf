@@ -1,7 +1,7 @@
-ratingslib.ratings.massey module
+ratingslibulf.ratings.massey module
 ================================
 
-.. automodule:: ratingslib.ratings.massey
+.. automodule:: ratingslibulf.ratings.massey
    :members:
    :undoc-members:
    :show-inheritance:

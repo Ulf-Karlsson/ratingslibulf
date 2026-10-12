@@ -1,7 +1,7 @@
-ratingslib package
+ratingslibulf package
 ==================
 
-.. automodule:: ratingslib
+.. automodule:: ratingslibulf
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,12 +12,12 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   ratingslib.app_movies
-   ratingslib.app_sports
-   ratingslib.datasets
-   ratingslib.ratings
-   ratingslib.tests
-   ratingslib.utils
+   ratingslibulf.app_movies
+   ratingslibulf.app_sports
+   ratingslibulf.datasets
+   ratingslibulf.ratings
+   ratingslibulf.tests
+   ratingslibulf.utils
 
 Submodules
 ----------
@@ -25,4 +25,4 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   ratingslib.application
+   ratingslibulf.application

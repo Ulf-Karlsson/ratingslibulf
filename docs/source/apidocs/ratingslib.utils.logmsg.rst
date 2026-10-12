@@ -1,7 +1,7 @@
-ratingslib.utils.logmsg module
+ratingslibulf.utils.logmsg module
 ==============================
 
-.. automodule:: ratingslib.utils.logmsg
+.. automodule:: ratingslibulf.utils.logmsg
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,7 +1,7 @@
-ratingslib.datasets package
+ratingslibulf.datasets package
 ===========================
 
-.. automodule:: ratingslib.datasets
+.. automodule:: ratingslibulf.datasets
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,8 +12,8 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   ratingslib.datasets.filenames
-   ratingslib.datasets.parameters
-   ratingslib.datasets.parse
-   ratingslib.datasets.preprocess
-   ratingslib.datasets.soccer
+   ratingslibulf.datasets.filenames
+   ratingslibulf.datasets.parameters
+   ratingslibulf.datasets.parse
+   ratingslibulf.datasets.preprocess
+   ratingslibulf.datasets.soccer

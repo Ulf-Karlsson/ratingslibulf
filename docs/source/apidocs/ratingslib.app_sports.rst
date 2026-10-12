@@ -1,7 +1,7 @@
-ratingslib.app\_sports package
+ratingslibulf.app\_sports package
 ==============================
 
-.. automodule:: ratingslib.app_sports
+.. automodule:: ratingslibulf.app_sports
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,7 +12,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   ratingslib.app_sports.tests
+   ratingslibulf.app_sports.tests
 
 Submodules
 ----------
@@ -20,4 +20,4 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   ratingslib.app_sports.methods
+   ratingslibulf.app_sports.methods

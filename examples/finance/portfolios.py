@@ -1,9 +1,9 @@
 """Small example on portfolio rating and ranking based on aggregation methods"""
 
-from ratingslib.datasets.filenames import FILENAME_PORTFOLIOS, dataset_path
-from ratingslib.ratings.aggregation import RatingAggregation
-from ratingslib.utils.enums import ratings
-from ratingslib.utils.methods import print_info
+from ratingslibulf.datasets.filenames import FILENAME_PORTFOLIOS, dataset_path
+from ratingslibulf.ratings.aggregation import RatingAggregation
+from ratingslibulf.utils.enums import ratings
+from ratingslibulf.utils.methods import print_info
 
 if __name__ == '__main__':
 

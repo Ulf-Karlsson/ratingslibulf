@@ -1,13 +1,13 @@
 """Ranking Lists comparisons"""
 
-import ratingslib.ratings as rl
+import ratingslibulf.ratings as rl
 import pandas as pd
-from ratingslib.datasets.filenames import (FILENAME_EPL_2018_2019_20_GAMES,
+from ratingslibulf.datasets.filenames import (FILENAME_EPL_2018_2019_20_GAMES,
                                            dataset_path)
-from ratingslib.ratings.methods import rating_systems_to_dict
-from ratingslib.ratings.metrics import kendall_tau_table
-from ratingslib.utils.enums import ratings
-from ratingslib.utils.methods import print_info, print_pandas
+from ratingslibulf.ratings.methods import rating_systems_to_dict
+from ratingslibulf.ratings.metrics import kendall_tau_table
+from ratingslibulf.utils.enums import ratings
+from ratingslibulf.utils.methods import print_info, print_pandas
 
 # ==========================================================================
 # Rating teams for the FILENAME_EPL_2018_2019_20_GAMES that contains the first

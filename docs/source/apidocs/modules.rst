@@ -1,7 +1,7 @@
-ratingslib
+ratingslibulf
 ==========
 
 .. toctree::
    :maxdepth: 4
 
-   ratingslib
+   ratingslibulf

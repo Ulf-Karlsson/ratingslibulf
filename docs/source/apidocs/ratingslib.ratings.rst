@@ -1,7 +1,7 @@
-ratingslib.ratings package
+ratingslibulf.ratings package
 ==========================
 
-.. automodule:: ratingslib.ratings
+.. automodule:: ratingslibulf.ratings
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,7 +12,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   ratingslib.ratings.tests
+   ratingslibulf.ratings.tests
 
 Submodules
 ----------
@@ -20,15 +20,15 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   ratingslib.ratings.accurate
-   ratingslib.ratings.aggregation
-   ratingslib.ratings.colley
-   ratingslib.ratings.elo
-   ratingslib.ratings.keener
-   ratingslib.ratings.markov
-   ratingslib.ratings.massey
-   ratingslib.ratings.methods
-   ratingslib.ratings.metrics
-   ratingslib.ratings.od
-   ratingslib.ratings.rating
-   ratingslib.ratings.winloss
+   ratingslibulf.ratings.accurate
+   ratingslibulf.ratings.aggregation
+   ratingslibulf.ratings.colley
+   ratingslibulf.ratings.elo
+   ratingslibulf.ratings.keener
+   ratingslibulf.ratings.markov
+   ratingslibulf.ratings.massey
+   ratingslibulf.ratings.methods
+   ratingslibulf.ratings.metrics
+   ratingslibulf.ratings.od
+   ratingslibulf.ratings.rating
+   ratingslibulf.ratings.winloss

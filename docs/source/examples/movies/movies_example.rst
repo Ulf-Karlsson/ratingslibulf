@@ -8,7 +8,7 @@ In this example there are 5 users and 3 movies.
 .. rubric:: Movies Example
 .. _label1:
 .. csv-table::
-   :file: ../../../../ratingslib/datasets/examples/moviesExample.csv
+   :file: ../../../../ratingslibulf/datasets/examples/moviesExample.csv
    :header-rows: 1
 
 .. toctree::

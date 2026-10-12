@@ -1,12 +1,12 @@
 """Soccer predictions for EPL 2009-2018 seasons: ratings - Naive Bayes"""
 
-import ratingslib.ratings as rl
-from ratingslib.app_sports.methods import (Predictions, prepare_sports_seasons,
+import ratingslibulf.ratings as rl
+from ratingslibulf.app_sports.methods import (Predictions, prepare_sports_seasons,
                                            rating_norm_features)
-from ratingslib.application import SoccerOutcome
-from ratingslib.datasets.filenames import get_seasons_dict_footballdata_online
-from ratingslib.datasets.parameters import championships, stats
-from ratingslib.utils.enums import ratings
+from ratingslibulf.application import SoccerOutcome
+from ratingslibulf.datasets.filenames import get_seasons_dict_footballdata_online
+from ratingslibulf.datasets.parameters import championships, stats
+from ratingslibulf.utils.enums import ratings
 from sklearn.naive_bayes import GaussianNB
 
 outcome = SoccerOutcome()

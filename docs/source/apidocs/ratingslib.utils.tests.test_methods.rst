@@ -1,7 +1,7 @@
-ratingslib.utils.tests.test\_methods module
+ratingslibulf.utils.tests.test\_methods module
 ===========================================
 
-.. automodule:: ratingslib.utils.tests.test_methods
+.. automodule:: ratingslibulf.utils.tests.test_methods
    :members:
    :undoc-members:
    :show-inheritance:

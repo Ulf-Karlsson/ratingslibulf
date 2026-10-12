@@ -1,7 +1,7 @@
-ratingslib.utils.enums module
+ratingslibulf.utils.enums module
 =============================
 
-.. automodule:: ratingslib.utils.enums
+.. automodule:: ratingslibulf.utils.enums
    :members:
    :undoc-members:
    :show-inheritance:

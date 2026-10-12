@@ -1,7 +1,7 @@
-ratingslib.ratings.winloss module
+ratingslibulf.ratings.winloss module
 =================================
 
-.. automodule:: ratingslib.ratings.winloss
+.. automodule:: ratingslibulf.ratings.winloss
    :members:
    :undoc-members:
    :show-inheritance:

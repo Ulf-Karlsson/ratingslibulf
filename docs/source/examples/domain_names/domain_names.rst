@@ -25,7 +25,7 @@ Google trends during 2013.
 .. rubric:: Domain Names Example
 .. _label1:
 .. csv-table::
-   :file: ../../../../ratingslib/datasets/examples/domainMarketExample.csv
+   :file: ../../../../ratingslibulf/datasets/examples/domainMarketExample.csv
    :header-rows: 1
 
 .. toctree:: 

@@ -1,4 +1,4 @@
-.. ratingslib documentation master file, created by
+.. ratingslibulf documentation master file, created by
    sphinx-quickstart on Sun Nov 28 20:52:58 2021.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
@@ -10,7 +10,7 @@ Welcome to RatingsLib's documentation!
 
 Development
 ===========
-The source code is available at https://github.com/ktalattinis/ratingslib
+The source code is available at https://github.com/ktalattinis/ratingslibulf
 
 Introduction
 ============
@@ -36,7 +36,7 @@ API References
    :maxdepth: 2
    :titlesonly:
    
-   apidocs/ratingslib
+   apidocs/ratingslibulf
 
 Indices and tables
 ==================

@@ -1,7 +1,7 @@
-ratingslib.utils.validation module
+ratingslibulf.utils.validation module
 ==================================
 
-.. automodule:: ratingslib.utils.validation
+.. automodule:: ratingslibulf.utils.validation
    :members:
    :undoc-members:
    :show-inheritance:

@@ -19,7 +19,7 @@ Soccer Data
 .. rubric:: Soccer Data: The first 20 games of EPL (2018-2019 season)
 .. _label1:
 .. csv-table::
-   :file: ../../../../ratingslib/datasets/examples/2018-2019EPL20games.csv
+   :file: ../../../../ratingslibulf/datasets/examples/2018-2019EPL20games.csv
    :header-rows: 1
    :widths: 2 2 2 1 1 1 1 1 1 1
 
@@ -27,7 +27,7 @@ Soccer Data
 .. rubric:: Soccer Data: The 3rd match-week of EPL (2018-2019 season)
 .. _label2:
 .. csv-table:: 
-   :file: ../../../../ratingslib/datasets/examples/2018-2019EPL3rd-weekgames.csv
+   :file: ../../../../ratingslibulf/datasets/examples/2018-2019EPL3rd-weekgames.csv
    :header-rows: 1
    :widths: 2 2 2 1 1 1 1 1 1 1
 

@@ -1,7 +1,7 @@
-ratingslib.datasets.parse module
+ratingslibulf.datasets.parse module
 ================================
 
-.. automodule:: ratingslib.datasets.parse
+.. automodule:: ratingslibulf.datasets.parse
    :members:
    :undoc-members:
    :show-inheritance:

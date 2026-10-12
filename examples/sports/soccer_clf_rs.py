@@ -1,11 +1,11 @@
 """Soccer outcome prediction: AccuRATE - Naive Bayes"""
 
 
-from ratingslib.app_sports.methods import Predictions, prepare_sports_seasons
-from ratingslib.application import SoccerOutcome
-from ratingslib.datasets.filenames import get_seasons_dict_footballdata_online
-from ratingslib.datasets.parameters import championships
-from ratingslib.ratings.accurate import AccuRate
+from ratingslibulf.app_sports.methods import Predictions, prepare_sports_seasons
+from ratingslibulf.application import SoccerOutcome
+from ratingslibulf.datasets.filenames import get_seasons_dict_footballdata_online
+from ratingslibulf.datasets.parameters import championships
+from ratingslibulf.ratings.accurate import AccuRate
 from sklearn.naive_bayes import GaussianNB
 
 outcome = SoccerOutcome()

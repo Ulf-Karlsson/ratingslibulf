@@ -12,10 +12,10 @@ Installation
 RatingsLib requires Python 3.8 or newer. More details about requirements can be found in ``requirements.txt``.
 You can install ``RatingsLib`` directly ::
 
- pip install git+https://github.com/ktalattinis/ratingslib
+ pip install git+https://github.com/ktalattinis/ratingslibulf
 
 or by cloning the repository ::
 
- git clone https://github.com/ktalattinis/ratingslib
+ git clone https://github.com/ktalattinis/ratingslibulf
  cd ratings
  pip install .

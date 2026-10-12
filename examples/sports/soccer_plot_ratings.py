@@ -1,15 +1,15 @@
 """Plot rating values of teams"""
 
-import ratingslib.ratings as rl
+import ratingslibulf.ratings as rl
 import pandas as pd
-from ratingslib.app_sports.methods import prepare_sports_seasons
-from ratingslib.application import SoccerOutcome
-from ratingslib.datasets.filenames import get_seasons_dict_footballdata_online
-from ratingslib.datasets.soccer import championships
-from ratingslib.datasets.parameters import COLUMNS_DICT
-from ratingslib.ratings.methods import plot_ratings
-from ratingslib.utils.enums import ratings
-from ratingslib.utils.methods import parse_columns
+from ratingslibulf.app_sports.methods import prepare_sports_seasons
+from ratingslibulf.application import SoccerOutcome
+from ratingslibulf.datasets.filenames import get_seasons_dict_footballdata_online
+from ratingslibulf.datasets.soccer import championships
+from ratingslibulf.datasets.parameters import COLUMNS_DICT
+from ratingslibulf.ratings.methods import plot_ratings
+from ratingslibulf.utils.enums import ratings
+from ratingslibulf.utils.methods import parse_columns
 
 pd.set_option('float_format', "{:.4f}".format)
 

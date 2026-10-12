@@ -10,12 +10,12 @@ Readme Link: https://files.grouplens.org/datasets/movielens/ml-latest-small-READ
 """
 
 import pandas as pd
-from ratingslib.app_movies.preparedata import create_movie_users
-from ratingslib.datasets.filenames import MOVIES_DATA_PATH, datasets_paths
-from ratingslib.datasets.parse import create_pairs_data, parse_pairs_data
-import ratingslib.ratings as rl
-from ratingslib.utils.enums import ratings
-from ratingslib.utils.methods import parse_columns, print_info, print_pandas
+from ratingslibulf.app_movies.preparedata import create_movie_users
+from ratingslibulf.datasets.filenames import MOVIES_DATA_PATH, datasets_paths
+from ratingslibulf.datasets.parse import create_pairs_data, parse_pairs_data
+import ratingslibulf.ratings as rl
+from ratingslibulf.utils.enums import ratings
+from ratingslibulf.utils.methods import parse_columns, print_info, print_pandas
 
 # set minimum votes from users
 MIN_VOTES = 200

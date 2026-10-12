@@ -1,10 +1,10 @@
 """Small example for rating/ranking movies"""
 
-import ratingslib.ratings as rl
+import ratingslibulf.ratings as rl
 import pandas as pd
-from ratingslib.datasets.filenames import FILENAME_MOVIES_EXAMPLE, dataset_path
-from ratingslib.datasets.parse import create_pairs_data, parse_pairs_data
-from ratingslib.utils.methods import parse_columns
+from ratingslibulf.datasets.filenames import FILENAME_MOVIES_EXAMPLE, dataset_path
+from ratingslibulf.datasets.parse import create_pairs_data, parse_pairs_data
+from ratingslibulf.utils.methods import parse_columns
 
 filename = dataset_path(FILENAME_MOVIES_EXAMPLE)
 user_movie_df = pd.read_csv(filename, index_col='User')

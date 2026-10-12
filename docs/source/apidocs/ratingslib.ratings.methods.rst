@@ -1,7 +1,7 @@
-ratingslib.ratings.methods module
+ratingslibulf.ratings.methods module
 =================================
 
-.. automodule:: ratingslib.ratings.methods
+.. automodule:: ratingslibulf.ratings.methods
    :members:
    :undoc-members:
    :show-inheritance:

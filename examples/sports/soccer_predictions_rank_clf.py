@@ -1,15 +1,15 @@
 """Predictions with RANK, NAIVEBAYES"""
 
 
-import ratingslib.ratings as rl
+import ratingslibulf.ratings as rl
 import pandas as pd
-from ratingslib.app_sports.methods import (Predictions,
+from ratingslibulf.app_sports.methods import (Predictions,
                                            prepare_sports_seasons, rating_norm_features)
-from ratingslib.application import SoccerOutcome
-from ratingslib.datasets.filenames import get_seasons_dict_footballdata_online
-from ratingslib.datasets.soccer import championships
-from ratingslib.datasets.parameters import stats
-from ratingslib.utils.enums import ratings
+from ratingslibulf.application import SoccerOutcome
+from ratingslibulf.datasets.filenames import get_seasons_dict_footballdata_online
+from ratingslibulf.datasets.soccer import championships
+from ratingslibulf.datasets.parameters import stats
+from ratingslibulf.utils.enums import ratings
 from sklearn.naive_bayes import GaussianNB
 
 pd.set_option('float_format', "{:.4f}".format)

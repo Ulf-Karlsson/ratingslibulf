@@ -18,7 +18,7 @@ Payback Period (PP).
 .. rubric:: Investments’ Attributes
 .. _label1:
 .. csv-table::
-   :file: ../../../../ratingslib/datasets/examples/investmentsExample.csv
+   :file: ../../../../ratingslibulf/datasets/examples/investmentsExample.csv
    :header-rows: 1
 
 The following notebook shows how to rate and rank investments by utilizing rating and ranking aggregation methods.

@@ -1,7 +1,7 @@
-ratingslib.ratings.accurate module
+ratingslibulf.ratings.accurate module
 ==================================
 
-.. automodule:: ratingslib.ratings.accurate
+.. automodule:: ratingslibulf.ratings.accurate
    :members:
    :undoc-members:
    :show-inheritance:

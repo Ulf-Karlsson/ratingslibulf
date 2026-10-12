@@ -1,7 +1,7 @@
-ratingslib.app\_sports.methods module
+ratingslibulf.app\_sports.methods module
 =====================================
 
-.. automodule:: ratingslib.app_sports.methods
+.. automodule:: ratingslibulf.app_sports.methods
    :members:
    :undoc-members:
    :show-inheritance:

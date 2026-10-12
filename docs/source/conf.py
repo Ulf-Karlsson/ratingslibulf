@@ -24,7 +24,7 @@ print(target_dir)
 
 # -- Project information -----------------------------------------------------
 
-project = 'ratingslib'
+project = 'ratingslibulf'
 copyright = '2022, Kyriacos Talattinis'
 author = 'Kyriacos Talattinis'
 

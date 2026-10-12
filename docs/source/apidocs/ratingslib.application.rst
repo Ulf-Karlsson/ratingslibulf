@@ -1,7 +1,7 @@
-ratingslib.application module
+ratingslibulf.application module
 =============================
 
-.. automodule:: ratingslib.application
+.. automodule:: ratingslibulf.application
    :members:
    :undoc-members:
    :show-inheritance:

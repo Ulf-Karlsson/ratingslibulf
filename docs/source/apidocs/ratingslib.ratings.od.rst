@@ -1,7 +1,7 @@
-ratingslib.ratings.od module
+ratingslibulf.ratings.od module
 ============================
 
-.. automodule:: ratingslib.ratings.od
+.. automodule:: ratingslibulf.ratings.od
    :members:
    :undoc-members:
    :show-inheritance:

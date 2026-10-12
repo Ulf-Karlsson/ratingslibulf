@@ -1,7 +1,7 @@
-ratingslib.datasets.soccer module
+ratingslibulf.datasets.soccer module
 =================================
 
-.. automodule:: ratingslib.datasets.soccer
+.. automodule:: ratingslibulf.datasets.soccer
    :members:
    :undoc-members:
    :show-inheritance:

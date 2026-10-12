@@ -1,11 +1,11 @@
 """Small example on domain names ranking"""
 
-import ratingslib.ratings as rl
+import ratingslibulf.ratings as rl
 import pandas as pd
-from ratingslib.datasets.filenames import FILENAME_DOMAIN_NAMES, dataset_path
-from ratingslib.utils import logmsg
-from ratingslib.utils.logmsg import set_logger
-from ratingslib.utils.methods import print_pandas
+from ratingslibulf.datasets.filenames import FILENAME_DOMAIN_NAMES, dataset_path
+from ratingslibulf.utils import logmsg
+from ratingslibulf.utils.logmsg import set_logger
+from ratingslibulf.utils.methods import print_pandas
 
 if __name__ == '__main__':
 

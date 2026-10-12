@@ -1,11 +1,11 @@
 """Tuning ELO parameters"""
 
-from ratingslib.app_sports.methods import Predictions, prepare_sports_seasons
-from ratingslib.application import SoccerOutcome
-from ratingslib.datasets.filenames import dataset_sports_path
-from ratingslib.datasets.parameters import championships
-from ratingslib.ratings.elo import Elo
-from ratingslib.utils.enums import ratings
+from ratingslibulf.app_sports.methods import Predictions, prepare_sports_seasons
+from ratingslibulf.application import SoccerOutcome
+from ratingslibulf.datasets.filenames import dataset_sports_path
+from ratingslibulf.datasets.parameters import championships
+from ratingslibulf.ratings.elo import Elo
+from ratingslibulf.utils.enums import ratings
 from sklearn.naive_bayes import GaussianNB
 
 outcome = SoccerOutcome()

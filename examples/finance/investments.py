@@ -1,10 +1,10 @@
 """Small example on investment selection based on rating and ranking aggregation methods"""
 
 import pandas as pd
-from ratingslib.datasets.filenames import FILENAME_INVESTMENTS, dataset_path
-from ratingslib.ratings.aggregation import RankingAggregation, RatingAggregation
-from ratingslib.utils.enums import ratings
-from ratingslib.utils.methods import print_info
+from ratingslibulf.datasets.filenames import FILENAME_INVESTMENTS, dataset_path
+from ratingslibulf.ratings.aggregation import RankingAggregation, RatingAggregation
+from ratingslibulf.utils.enums import ratings
+from ratingslibulf.utils.methods import print_info
 
 if __name__ == '__main__':
     pd.set_option('float_format', "{:.4f}".format)

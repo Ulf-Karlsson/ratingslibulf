@@ -1,7 +1,7 @@
-ratingslib.ratings.tests package
+ratingslibulf.ratings.tests package
 ================================
 
-.. automodule:: ratingslib.ratings.tests
+.. automodule:: ratingslibulf.ratings.tests
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,5 +12,5 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   ratingslib.ratings.tests.test_all
-   ratingslib.ratings.tests.test_rating
+   ratingslibulf.ratings.tests.test_all
+   ratingslibulf.ratings.tests.test_rating

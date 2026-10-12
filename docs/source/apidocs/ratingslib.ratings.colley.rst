@@ -1,7 +1,7 @@
-ratingslib.ratings.colley module
+ratingslibulf.ratings.colley module
 ================================
 
-.. automodule:: ratingslib.ratings.colley
+.. automodule:: ratingslibulf.ratings.colley
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,7 +1,7 @@
-ratingslib.app\_movies.tests.test\_all module
+ratingslibulf.app\_movies.tests.test\_all module
 =============================================
 
-.. automodule:: ratingslib.app_movies.tests.test_all
+.. automodule:: ratingslibulf.app_movies.tests.test_all
    :members:
    :undoc-members:
    :show-inheritance:

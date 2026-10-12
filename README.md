@@ -16,7 +16,7 @@ powershell
 
 
 pip install git+https://github.com/Ulf-Karlsson/ratingslibulf.git
-This will automatically download the package, read the pyproject.toml, and install ratingslib and all its dependencies (Pandas, SciPy, etc.) into your environment.
+This will automatically download the package, read the pyproject.toml, and install ratingslibulf and all its dependencies (Pandas, SciPy, etc.) into your environment.
 
 Option 2: Clone and Install (For Development)
 If you plan to modify the code on the other PC, you should clone the repository first and then install it:
@@ -72,7 +72,7 @@ Applications & Examples:
         * Application on real-world dataset from [MovieLens](https://grouplens.org/datasets/movielens/)
 
 ## Documentation
-The documentation is available at: https://ktalattinis.github.io/ratingslib/
+The documentation is available at: https://ktalattinis.github.io/ratingslibulf/
 
 
 

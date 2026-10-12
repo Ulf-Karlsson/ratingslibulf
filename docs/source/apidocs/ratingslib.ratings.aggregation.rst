@@ -1,7 +1,7 @@
-ratingslib.ratings.aggregation module
+ratingslibulf.ratings.aggregation module
 =====================================
 
-.. automodule:: ratingslib.ratings.aggregation
+.. automodule:: ratingslibulf.ratings.aggregation
    :members:
    :undoc-members:
    :show-inheritance:

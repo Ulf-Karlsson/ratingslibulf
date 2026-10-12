@@ -1,7 +1,7 @@
-ratingslib.ratings.keener module
+ratingslibulf.ratings.keener module
 ================================
 
-.. automodule:: ratingslib.ratings.keener
+.. automodule:: ratingslibulf.ratings.keener
    :members:
    :undoc-members:
    :show-inheritance:

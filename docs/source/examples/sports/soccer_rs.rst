@@ -1,7 +1,7 @@
 Rating systems and predictions
 ==============================
 The soccer outcome prediction can be made by turning ratings into predicitions.
-ratingslib provides two different methods. 
+ratingslibulf provides two different methods. 
 The first method takes into account the rankings while the second computes
 the probability of each outcome.
 In this example, we assess the predictive performance of each rating system with two different prediciton methods. 

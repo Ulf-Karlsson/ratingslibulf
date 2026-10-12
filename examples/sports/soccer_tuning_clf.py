@@ -1,11 +1,11 @@
 """Tuning number of neighbors KNN"""
 
-from ratingslib.app_sports.methods import (Predictions, prepare_sports_seasons,
+from ratingslibulf.app_sports.methods import (Predictions, prepare_sports_seasons,
                                            rating_norm_features)
-from ratingslib.application import SoccerOutcome
-from ratingslib.datasets.filenames import get_seasons_dict_footballdata_online
-from ratingslib.datasets.parameters import championships
-from ratingslib.ratings.colley import Colley
+from ratingslibulf.application import SoccerOutcome
+from ratingslibulf.datasets.filenames import get_seasons_dict_footballdata_online
+from ratingslibulf.datasets.parameters import championships
+from ratingslibulf.ratings.colley import Colley
 from sklearn.neighbors import KNeighborsClassifier
 
 outcome = SoccerOutcome()

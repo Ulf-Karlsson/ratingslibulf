@@ -1,7 +1,7 @@
-ratingslib.utils package
+ratingslibulf.utils package
 ========================
 
-.. automodule:: ratingslib.utils
+.. automodule:: ratingslibulf.utils
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,7 +12,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   ratingslib.utils.tests
+   ratingslibulf.utils.tests
 
 Submodules
 ----------
@@ -20,7 +20,7 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   ratingslib.utils.enums
-   ratingslib.utils.logmsg
-   ratingslib.utils.methods
-   ratingslib.utils.validation
+   ratingslibulf.utils.enums
+   ratingslibulf.utils.logmsg
+   ratingslibulf.utils.methods
+   ratingslibulf.utils.validation

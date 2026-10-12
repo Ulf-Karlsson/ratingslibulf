@@ -1,7 +1,7 @@
-ratingslib.tests.test\_all module
+ratingslibulf.tests.test\_all module
 =================================
 
-.. automodule:: ratingslib.tests.test_all
+.. automodule:: ratingslibulf.tests.test_all
    :members:
    :undoc-members:
    :show-inheritance:

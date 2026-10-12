@@ -1,7 +1,7 @@
-ratingslib.datasets.preprocess module
+ratingslibulf.datasets.preprocess module
 =====================================
 
-.. automodule:: ratingslib.datasets.preprocess
+.. automodule:: ratingslibulf.datasets.preprocess
    :members:
    :undoc-members:
    :show-inheritance:

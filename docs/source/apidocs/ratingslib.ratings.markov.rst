@@ -1,7 +1,7 @@
-ratingslib.ratings.markov module
+ratingslibulf.ratings.markov module
 ================================
 
-.. automodule:: ratingslib.ratings.markov
+.. automodule:: ratingslibulf.ratings.markov
    :members:
    :undoc-members:
    :show-inheritance:
