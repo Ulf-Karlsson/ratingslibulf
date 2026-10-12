@@ -131,6 +131,51 @@ class TestMethods(unittest.TestCase):
         self.assertEqual(len(results['MLE']['AccuRATE'][1]), 3)
         self.assertEqual(len(results['RANK']['AccuRATE'][1]), 3)
 
+    @printdetails
+    def test_rs_pred_proba(self):
+        import numpy as np
+        import pandas as pd
+        from ratingslib.app_sports.methods import prepare_forecast_dataset, Predictions
+        columns_dict = COLUMNS_DICT.copy()
+        outcome = SoccerOutcome()
+        data_train, teams_df = parse_pairs_data(FP_FILENAME_EPL_2018_2019_20_GAMES,
+                                                outcome=outcome,
+                                                columns_dict=columns_dict)
+        data_train['Week_Number'] = np.arange(1, len(data_train) + 1)
+        data_test = data_train.iloc[:3].copy()
+        data_test[['FTHG', 'FTAG', outcome.name]] = np.nan
+        data_test['Week_Number'] = 100
+
+        ac = AccuRate()
+        train_prep, test_prep = prepare_forecast_dataset(
+            data_train, data_test, teams_df, {'AccuRATE': ac},
+            start_week=2, columns_dict=columns_dict)
+
+        expected_cols = ['Date', 'HomeTeam', 'AwayTeam', 'P(H)', 'P(D)', 'P(A)',
+                         'Odds(H)', 'Odds(D)', 'Odds(A)', 'Prediction']
+
+        # Path 1: explicit data_test
+        proba = Predictions(train_prep, outcome, data_test=test_prep,
+                            columns_dict=columns_dict).rs_pred_proba(
+            rating_systems={'AccuRATE': ac})
+        df = proba['AccuRATE']
+        self.assertListEqual(list(df.columns), expected_cols)
+        self.assertEqual(len(df), 3)
+        self.assertListEqual(list(df['HomeTeam']), list(data_test['HomeTeam']))
+        np.testing.assert_allclose(df[['P(H)', 'P(D)', 'P(A)']].sum(axis=1), 1.0, atol=1e-3)
+        np.testing.assert_allclose(df['Odds(H)'], 1 / df['P(H)'], rtol=1e-2)
+        self.assertTrue(set(df['Prediction']).issubset({'H', 'D', 'A'}))
+        # predicted outcome is the most likely one
+        best = df[['P(H)', 'P(D)', 'P(A)']].idxmax(axis=1).str[2]
+        self.assertListEqual(list(best), list(df['Prediction']))
+
+        # Path 2: no data_test, unplayed matches inside data
+        data_all = pd.concat([train_prep, test_prep]).reset_index(drop=True)
+        proba2 = Predictions(data_all, outcome,
+                             columns_dict=columns_dict).rs_pred_proba(
+            rating_systems={'AccuRATE': ac})
+        self.assertEqual(len(proba2['AccuRATE']), 3)
+
 
 if __name__ == '__main__':
     unittest.main()

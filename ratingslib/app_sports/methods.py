@@ -757,6 +757,103 @@ class Predictions():
                     print_predictions=print_predictions_all)
         return results_dict
 
+    def rs_pred_proba(self, *,
+                      rating_systems: Union[Dict[str, RatingSystem],
+                                            List[RatingSystem], RatingSystem],
+                      decimals: int = 4
+                      ) -> Dict[str, pd.DataFrame]:
+        """Outcome probabilities for upcoming fixtures, using the MLE method.
+
+        The MLE model (modified logistic function, Lasek et al. 2013) is fitted
+        on the played matches and then applied to the fixtures to forecast.
+        The fixtures are taken from ``data_test`` if it was passed to the
+        constructor, otherwise from the unplayed matches (missing scores) in
+        ``data``.
+
+        Parameters
+        ----------
+        rating_systems : Dict[str, RatingSystem] or List[RatingSystem] or RatingSystem
+            Rating systems to produce probabilities for.
+
+        decimals : int, default=4
+            Number of decimals for the probabilities. Odds are rounded to 2.
+
+        Returns
+        -------
+        Dict[str, pd.DataFrame]
+            Maps the rating system key (same keys as in :meth:`rs_pred_parallel`)
+            to a DataFrame with one row per fixture and the columns
+            ``Date`` (if available), ``HomeTeam``, ``AwayTeam``,
+            ``P(H)``, ``P(D)``, ``P(A)``, ``Odds(H)``, ``Odds(D)``, ``Odds(A)``
+            and ``Prediction`` (``'H'``, ``'D'`` or ``'A'``).
+        """
+        outcomes_dict = getattr(self.outcome, 'outcomes_dict', {})
+        if not {'H', 'D', 'A'}.issubset(outcomes_dict):
+            raise ValidationError(
+                'rs_pred_proba requires a soccer outcome with H, D and A outcomes')
+        col_names = parse_columns(self.columns_dict)
+        ratings_dict = rating_systems_to_dict(rating_systems)
+        if isinstance(self.data, pd.DataFrame):
+            data = self.data
+        else:
+            data = pd.concat(list(self.data.values()), ignore_index=True)
+
+        score_cols = [getattr(col_names, attr, None)
+                      for attr in ['points_i', 'points_j']]
+        score_cols = [c for c in score_cols if c is not None]
+        label_of = {outcomes_dict['H']: 'H', outcomes_dict['D']: 'D',
+                    outcomes_dict['A']: 'A'}
+
+        results = {}
+        for rs in ratings_dict.values():
+            key = rs.params_key
+            features = ['Hratingnorm' + key, 'Aratingnorm' + key]
+            data_X, data_Y, data_clean = self._select_X_Y(
+                data.copy(deep=True), features, col_names)
+
+            if self.data_test is not None:
+                train_mask = data_Y.notna()
+                fixtures = self.data_test
+            else:
+                unplayed = data_Y.isna()
+                present = [c for c in score_cols if c in data_clean.columns]
+                if present:
+                    unplayed = unplayed | data_clean[present].isna().any(axis=1)
+                train_mask = ~unplayed
+                fixtures = data_clean[unplayed]
+
+            if fixtures.empty:
+                results[key] = pd.DataFrame()
+                continue
+
+            train_X = data_X[train_mask].values
+            train_Y = data_Y[train_mask].values
+            if len(train_X) == 0:
+                raise ValidationError(
+                    f'No played matches available to fit the MLE model for {key}')
+            test_X = fixtures[features].fillna(0.0).values
+            preds, probs = self.outcome.fit_and_predict(
+                train_X, train_Y, test_X, method='MLE')
+
+            # probs are ordered [H, A, D] by SoccerOutcome
+            probs = np.asarray(probs, dtype=float)
+            p_h, p_a, p_d = probs[:, 0], probs[:, 1], probs[:, 2]
+            out = pd.DataFrame(index=range(len(fixtures)))
+            if DATE_COL in fixtures.columns:
+                out[DATE_COL] = fixtures[DATE_COL].to_numpy()
+            out['HomeTeam'] = fixtures[col_names.item_i].to_numpy()
+            out['AwayTeam'] = fixtures[col_names.item_j].to_numpy()
+            out['P(H)'] = np.round(p_h, decimals)
+            out['P(D)'] = np.round(p_d, decimals)
+            out['P(A)'] = np.round(p_a, decimals)
+            with np.errstate(divide='ignore'):
+                out['Odds(H)'] = np.round(1 / p_h, 2)
+                out['Odds(D)'] = np.round(1 / p_d, 2)
+                out['Odds(A)'] = np.round(1 / p_a, 2)
+            out['Prediction'] = [label_of.get(p, p) for p in preds]
+            results[key] = out
+        return results
+
     def rs_tuning_params(self, *,
                          ratings_dict: Dict[str, RatingSystem],
                          predict_with: Union[Literal['MLE', 'RANK'],
